@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picker Wheel - Random Decision Maker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-circle-notch"></i> Picker Wheel</h1>
+            <p>Add your options and spin the wheel to make a random decision!</p>
+        </header>
+
+        <div class="main-content">
+            <div class="wheel-section">
+                <div class="wheel-container">
+                    <canvas id="wheelCanvas" width="400" height="400"></canvas>
+                    <div class="wheel-pointer">
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                    <button id="spinBtn" class="spin-button">
+                        <i class="fas fa-play"></i>
+                        SPIN
+                    </button>
+                </div>
+                
+                <div class="result-display" id="resultDisplay">
+                    <div class="result-content">
+                        <h3>Result:</h3>
+                        <div class="result-text" id="resultText">Click spin to get a result!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="input-section">
+                    <h3><i class="fas fa-list"></i> Wheel Options</h3>
+                    <div class="add-item">
+                        <input type="text" id="itemInput" placeholder="Enter an option..." maxlength="50">
+                        <button id="addBtn"><i class="fas fa-plus"></i> Add</button>
+                    </div>
+                    
+                    <div class="items-list" id="itemsList">
+                        <!-- Items will be dynamically added here -->
+                    </div>
+                    
+                    <div class="list-controls">
+                        <button id="clearBtn" class="clear-btn">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                        <button id="defaultBtn" class="default-btn">
+                            <i class="fas fa-refresh"></i> Load Defaults
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3><i class="fas fa-cog"></i> Settings</h3>
+                    
+                    <div class="setting-group">
+                        <label for="spinDuration">Spin Duration:</label>
+                        <select id="spinDuration">
+                            <option value="2000">2 seconds</option>
+                            <option value="3000" selected>3 seconds</option>
+                            <option value="4000">4 seconds</option>
+                            <option value="5000">5 seconds</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="soundToggle">Sound Effects:</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="soundToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="confettiToggle">Confetti Animation:</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="confettiToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="export-section">
+                    <h3><i class="fas fa-download"></i> Export</h3>
+                    <button id="exportBtn" class="export-btn">
+                        <i class="fas fa-camera"></i> Save as Image
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="confetti-container" id="confettiContainer"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
