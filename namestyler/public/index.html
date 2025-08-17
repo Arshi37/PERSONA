@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NameStyler — Smart Username Generator</title>
+  <meta name="description" content="Generate catchy, brandable usernames with smart style presets, filters, and instant copy.">
+  <link rel="icon" href="./favicon.ico">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <span class="logo">NS</span>
+        <span class="brand-name">NameStyler</span>
+      </div>
+      <nav class="nav">
+        <a href="#generator" class="active">Generator</a>
+        <a href="#favorites">Favorites</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Generate usernames that fit your vibe</h1>
+      <p>Mix topics, styles, and filters to craft unique handles. Runs fully in your browser.</p>
+    </section>
+
+    <section class="controls" id="generator">
+      <div class="control-grid">
+        <div class="field">
+          <label for="topics">Topics or keywords</label>
+          <input id="topics" type="text" placeholder="e.g., art, fitness, crypto">
+          <small>Comma-separated. Optional.</small>
+        </div>
+
+        <div class="field">
+          <label for="style">Style preset</label>
+          <select id="style">
+            <option value="balanced">Balanced</option>
+            <option value="playful">Playful</option>
+            <option value="cool">Cool</option>
+            <option value="professional">Professional</option>
+            <option value="edgy">Edgy</option>
+            <option value="cute">Cute</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="sci-fi">Sci‑Fi</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Case</label>
+          <div class="segmented" id="caseGroup">
+            <button data-case="lower" class="active">lowercase</button>
+            <button data-case="title">TitleCase</button>
+            <button data-case="camel">camelCase</button>
+            <button data-case="snake">snake_case</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="startsWith">Starts with</label>
+          <input id="startsWith" type="text" maxlength="2" placeholder="optional">
+        </div>
+
+        <div class="field">
+          <label>Length</label>
+          <div class="range">
+            <input id="minLen" type="number" min="3" max="24" value="5">
+            <span>to</span>
+            <input id="maxLen" type="number" min="3" max="30" value="14">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Options</label>
+          <div class="checkboxes">
+            <label><input id="allowNumbers" type="checkbox" checked> include numbers</label>
+            <label><input id="allowSeparators" type="checkbox"> include _ or -</label>
+            <label><input id="noVowels" type="checkbox"> remove vowels (edgy)</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="qty">How many</label>
+          <input id="qty" type="number" min="5" max="100" value="30">
+        </div>
+
+        <div class="field actions">
+          <button id="generateBtn" class="primary">Generate</button>
+          <button id="shuffleBtn">Shuffle</button>
+          <button id="copyAllBtn">Copy all</button>
+          <button id="clearFavsBtn" class="danger">Clear favorites</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="results">
+      <div class="results-header">
+        <h2>Results</h2>
+        <div class="result-stats" id="resultStats">0 results</div>
+      </div>
+      <ul id="resultsList" class="results-list"></ul>
+    </section>
+
+    <section id="favorites" class="favorites">
+      <div class="results-header">
+        <h2>Favorites</h2>
+        <div class="result-stats" id="favoritesStats">0 saved</div>
+      </div>
+      <ul id="favoritesList" class="results-list"></ul>
+    </section>
+
+    <section id="about" class="about">
+      <h2>About</h2>
+      <p>Open-source username generator by NameStyler. No tracking, runs in your browser.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span id="year"></span> NameStyler</span>
+      <a href="#" id="exportFavsBtn">Export favorites</a>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
