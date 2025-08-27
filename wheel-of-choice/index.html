@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wheel of Choice - Demo</title>
+    <link rel="stylesheet" href="./wheel-of-choice.css" />
+    <style>
+      body { margin: 0; padding: 24px; background: #eef5f8; color: #12212b; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      .container { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+      .card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+      .title { font-size: 22px; font-weight: 900; margin: 0 0 12px; }
+      .subtitle { opacity: 0.8; margin: 6px 0 16px; }
+      .inputs { display: grid; gap: 10px; }
+      textarea { width: 100%; height: 200px; border-radius: 10px; border: 1px solid #d2e3ea; padding: 10px; font-family: inherit; }
+      .row { display: flex; align-items: center; gap: 8px; }
+      .row label { display: flex; align-items: center; gap: 8px; }
+      .actions { display: flex; gap: 8px; }
+      button.primary { padding: 10px 16px; background: #006d77; color: #fff; border: 0; border-radius: 8px; cursor: pointer; font-weight: 800; }
+      button.secondary { padding: 10px 16px; background: #e6f3f5; color: #054861; border: 0; border-radius: 8px; cursor: pointer; font-weight: 700; }
+      .footer { margin-top: 24px; opacity: 0.6; font-size: 13px; }
+      @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="title">Wheel of Choice</div>
+        <div class="subtitle">Enter choices (one per line) and press Apply. Click Spin!</div>
+        <div id="wheel-root"></div>
+      </div>
+      <div class="card">
+        <div class="title">Options</div>
+        <div class="inputs">
+          <label>Choices</label>
+          <textarea id="choices" placeholder="Alice\nBob\nCharlie\n...">Alice
+Bob
+Charlie
+Delta</textarea>
+          <div class="row">
+            <label><input type="checkbox" id="removeChosen" /> Remove chosen item after spin</label>
+          </div>
+          <div class="actions">
+            <button class="primary" id="applyBtn">Apply</button>
+            <button class="secondary" id="spinBtn">Spin</button>
+          </div>
+        </div>
+        <div class="footer">This is a lightweight, embeddable widget. Copy the JS and CSS files into your site, and initialize it in a container.</div>
+      </div>
+    </div>
+
+    <script src="./wheel-of-choice.js"></script>
+    <script>
+      const root = document.getElementById('wheel-root');
+      const wheel = new WheelOfChoice(root, {
+        items: ['Alice', 'Bob', 'Charlie', 'Delta'],
+        removeChosenItem: false,
+        spinDurationMs: 4500,
+        size: 420
+      });
+
+      const choicesEl = document.getElementById('choices');
+      const removeEl = document.getElementById('removeChosen');
+      const applyBtn = document.getElementById('applyBtn');
+      const spinBtn = document.getElementById('spinBtn');
+
+      applyBtn.addEventListener('click', () => {
+        const items = choicesEl.value.split(/\n+/).map(s => s.trim()).filter(Boolean);
+        wheel.removeChosenItem = !!removeEl.checked;
+        wheel.setItems(items);
+      });
+      spinBtn.addEventListener('click', () => wheel.spin());
+
+      // Optional: Handle events
+      wheel.on('spinstart', () => {
+        spinBtn.disabled = true;
+        applyBtn.disabled = true;
+      });
+      wheel.on('spinend', ({ winner }) => {
+        spinBtn.disabled = false;
+        applyBtn.disabled = false;
+        console.log('Winner:', winner);
+      });
+    </script>
+  </body>
+  </html>
+
