@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website with Wheel of Choice</title>
+    <style>
+        /* Your existing website styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .intro {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Wheel container styling for integration */
+        .wheel-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .wheel-section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        /* Remove the full-screen background from wheel container */
+        .wheel-of-choice-container {
+            background: none !important;
+            min-height: auto !important;
+            padding: 0 !important;
+        }
+        
+        .wheel-of-choice-container .container {
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    
+    <!-- Include the wheel CSS -->
+    <link rel="stylesheet" href="wheel-styles.css">
+</head>
+<body>
+    <!-- Your existing website header -->
+    <header class="header">
+        <h1>My Awesome Website</h1>
+        <nav>
+            <a href="#home" style="color: white; margin: 0 1rem;">Home</a>
+            <a href="#about" style="color: white; margin: 0 1rem;">About</a>
+            <a href="#wheel" style="color: white; margin: 0 1rem;">Wheel of Choice</a>
+            <a href="#contact" style="color: white; margin: 0 1rem;">Contact</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Your existing content -->
+        <section class="intro">
+            <h2>Welcome to My Website!</h2>
+            <p>This is an example of how to integrate the Wheel of Choice into your existing website. The wheel maintains its full functionality while fitting seamlessly into your design.</p>
+        </section>
+
+        <!-- Embedded Wheel of Choice -->
+        <section class="wheel-section" id="wheel">
+            <h2>🎡 Make Your Choice!</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Can't decide? Let the wheel choose for you!</p>
+            
+            <!-- Wheel of Choice Container -->
+            <div class="wheel-of-choice-container" id="wheel-of-choice">
+                <div class="container">
+                    <div class="wheel-container">
+                        <div class="pointer"></div>
+                        <div class="wheel" id="wheel"></div>
+                        <div class="center-circle">SPIN</div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="spin-button" id="spinButton">Spin the Wheel!</button>
+                    </div>
+
+                    <div class="result" id="result">
+                        Click "Spin the Wheel" to get started!
+                    </div>
+
+                    <div class="options-section">
+                        <div class="options-list">
+                            <h3>Wheel Options</h3>
+                            <div id="optionsList"></div>
+                            <button class="add-option" onclick="addOption()">+ Add Option</button>
+                        </div>
+
+                        <div class="settings">
+                            <h3>Settings</h3>
+                            <div class="setting-item">
+                                <label for="spinDuration">Spin Duration (seconds)</label>
+                                <input type="range" id="spinDuration" min="2" max="8" value="4" oninput="updateSpinDuration(this.value)">
+                                <span id="durationValue">4s</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="spinSound">Play Sound</label>
+                                <select id="spinSound">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <button class="add-option" onclick="resetWheel()" style="background: #ff4757;">Reset Wheel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- More of your existing content -->
+        <section class="intro">
+            <h2>How It Works</h2>
+            <p>The wheel above is fully interactive and customizable. You can:</p>
+            <ul>
+                <li>Add or remove options</li>
+                <li>Change colors for each segment</li>
+                <li>Adjust spin duration</li>
+                <li>Enable or disable sound effects</li>
+                <li>Use keyboard shortcuts (press spacebar to spin)</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Include the wheel JavaScript -->
+    <script src="wheel-script.js"></script>
+    
+    <!-- Optional: Custom integration code -->
+    <script>
+        // Example: Listen for wheel results
+        document.addEventListener('wheelResult', function(event) {
+            console.log('Wheel result:', event.detail.winner.text);
+            
+            // You can add custom logic here based on the result
+            // For example, redirect to different pages based on the choice
+            /*
+            if (event.detail.winner.text === 'Pizza') {
+                // Do something for pizza
+            }
+            */
+        });
+
+        // Example: Customize the wheel for your specific use case
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set custom options when the page loads
+            if (wheel) {
+                wheel.setOptions([
+                    { text: 'Read a Book', color: '#FF6B6B' },
+                    { text: 'Watch a Movie', color: '#4ECDC4' },
+                    { text: 'Go for a Walk', color: '#45B7D1' },
+                    { text: 'Call a Friend', color: '#96CEB4' },
+                    { text: 'Cook Something', color: '#FFEAA7' },
+                    { text: 'Learn Something New', color: '#DDA0DD' }
+                ]);
+            }
+        });
+    </script>
+</body>
+</html>
