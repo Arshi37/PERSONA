@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinner Tool - NameStyler.site</title>
+    <link rel="stylesheet" href="spinner-tool.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🎯 Spinner Tool</h1>
+            <p class="subtitle">Add your options and spin to make a random selection!</p>
+        </header>
+
+        <div class="main-content">
+            <div class="spinner-section">
+                <div class="spinner-container">
+                    <canvas id="spinnerCanvas" width="400" height="400"></canvas>
+                    <div class="spinner-pointer"></div>
+                    <div class="center-circle">
+                        <button id="spinBtn" class="spin-button">
+                            <span class="spin-text">SPIN</span>
+                            <div class="spin-icon">🎲</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <div id="currentResult" class="current-result">
+                        <div class="result-label">Selected:</div>
+                        <div class="result-value">Click spin to start!</div>
+                    </div>
+                    
+                    <div class="spin-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Spins:</span>
+                            <span id="totalSpins" class="stat-value">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Items Remaining:</span>
+                            <span id="itemsRemaining" class="stat-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="input-group">
+                    <label for="itemsInput" class="input-label">
+                        <span>📝 Add Items</span>
+                        <small>Enter one item per line</small>
+                    </label>
+                    <textarea 
+                        id="itemsInput" 
+                        class="items-input" 
+                        placeholder="Apple&#10;Banana&#10;Cherry&#10;Date&#10;Elderberry"
+                        rows="8"
+                    >Apple
+Banana
+Cherry
+Date
+Elderberry
+Grape
+Kiwi
+Mango</textarea>
+                </div>
+
+                <div class="options-group">
+                    <h3 class="options-title">⚙️ Options</h3>
+                    
+                    <div class="option-row">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="removeAfterSpin" checked>
+                            <span class="checkmark"></span>
+                            Remove item after selection
+                        </label>
+                    </div>
+                    
+                    <div class="option-row">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableSound">
+                            <span class="checkmark"></span>
+                            Enable sound effects
+                        </label>
+                    </div>
+                    
+                    <div class="option-row">
+                        <label for="spinDuration" class="range-label">
+                            Spin Duration: <span id="durationValue">3</span>s
+                        </label>
+                        <input 
+                            type="range" 
+                            id="spinDuration" 
+                            class="range-input"
+                            min="2" 
+                            max="8" 
+                            value="3" 
+                            step="0.5"
+                        >
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="updateItems" class="btn btn-primary">
+                        <span>✅ Update Items</span>
+                    </button>
+                    <button id="resetSpinner" class="btn btn-secondary">
+                        <span>🔄 Reset All</span>
+                    </button>
+                    <button id="exportResults" class="btn btn-tertiary">
+                        <span>📊 Export Results</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <h3 class="history-title">📜 Spin History</h3>
+            <div id="historyList" class="history-list">
+                <div class="history-empty">No spins yet. Start spinning to see your results here!</div>
+            </div>
+            <button id="clearHistory" class="btn btn-ghost">Clear History</button>
+        </div>
+
+        <footer class="footer">
+            <p>Made with ❤️ for <strong>NameStyler.site</strong> | Lightweight & Fast Spinner Tool</p>
+        </footer>
+    </div>
+
+    <script src="spinner-tool.js"></script>
+</body>
+</html>
