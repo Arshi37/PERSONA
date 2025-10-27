@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Picker Wheel</title>
+    <meta name="description" content="Simple picker wheel tool: add choices, spin, and pick at random." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎡</text></svg>">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app__header">
+        <div class="brand">
+          <span class="brand__logo" aria-hidden="true">🎡</span>
+          <h1 class="brand__title">Picker Wheel</h1>
+        </div>
+        <div class="actions">
+          <button id="spinButton" class="btn btn--primary">Spin</button>
+          <button id="shuffleButton" class="btn" title="Shuffle items">Shuffle</button>
+          <button id="clearButton" class="btn btn--danger" title="Clear all">Clear</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel panel--left">
+          <label for="itemsInput" class="panel__label">Items (one per line)</label>
+          <textarea id="itemsInput" class="panel__textarea" placeholder="e.g.
+Alice
+Bob
+Charlie"></textarea>
+
+          <div class="panel__row">
+            <label class="switch">
+              <input id="removeAfterPickToggle" type="checkbox" />
+              <span>Remove after pick</span>
+            </label>
+            <label class="switch">
+              <input id="confettiToggle" type="checkbox" checked />
+              <span>Confetti</span>
+            </label>
+          </div>
+
+          <div class="panel__row">
+            <button id="addSampleButton" class="btn btn--ghost">Add sample</button>
+            <button id="shareButton" class="btn btn--ghost">Copy share link</button>
+          </div>
+
+          <div class="history">
+            <div class="history__header">
+              <h3>History</h3>
+              <button id="clearHistoryButton" class="btn btn--tiny">Clear</button>
+            </div>
+            <ol id="historyList" class="history__list"></ol>
+          </div>
+        </section>
+
+        <section class="panel panel--right">
+          <div class="wheel">
+            <canvas id="wheelCanvas" aria-label="Picker wheel" role="img"></canvas>
+            <div class="wheel__pointer" aria-hidden="true"></div>
+            <div id="resultBadge" class="result" aria-live="polite"></div>
+            <canvas id="confettiCanvas" class="confetti"></canvas>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app__footer">
+        <span>Built with ❤️</span>
+        <a href="https://pickerwheel.com" target="_blank" rel="noopener">Inspired by pickerwheel.com</a>
+      </footer>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
