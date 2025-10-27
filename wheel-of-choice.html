@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel of Choice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .title {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .wheel-container {
+            position: relative;
+            margin: 0 auto 30px;
+            width: 400px;
+            height: 400px;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            font-size: 14px;
+            text-align: center;
+            padding: 0 10px;
+            overflow: hidden;
+        }
+
+        .wheel-segment span {
+            transform: rotate(-45deg);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #ff4757;
+            z-index: 10;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff4757, #ff3742);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            z-index: 5;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .spin-button {
+            background: linear-gradient(135deg, #ff4757, #ff3742);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .spin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
+        }
+
+        .spin-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .options-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .options-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .options-list h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .option-input {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .option-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 14px;
+        }
+
+        .option-input .color-picker {
+            width: 50px;
+            padding: 0;
+            border: 1px solid #ddd;
+            border-left: none;
+        }
+
+        .option-input .remove-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            width: 40px;
+        }
+
+        .add-option {
+            background: #2ed573;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result.show {
+            background: linear-gradient(135deg, #2ed573, #1dd1a1);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            animation: resultPulse 0.6s ease-in-out;
+        }
+
+        @keyframes resultPulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .settings {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .settings h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .setting-item {
+            margin-bottom: 15px;
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .setting-item input, .setting-item select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .options-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🎡 Wheel of Choice</h1>
+        
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel"></div>
+            <div class="center-circle">SPIN</div>
+        </div>
+
+        <div class="controls">
+            <button class="spin-button" id="spinButton">Spin the Wheel!</button>
+        </div>
+
+        <div class="result" id="result">
+            Click "Spin the Wheel" to get started!
+        </div>
+
+        <div class="options-section">
+            <div class="options-list">
+                <h3>Wheel Options</h3>
+                <div id="optionsList"></div>
+                <button class="add-option" onclick="addOption()">+ Add Option</button>
+            </div>
+
+            <div class="settings">
+                <h3>Settings</h3>
+                <div class="setting-item">
+                    <label for="spinDuration">Spin Duration (seconds)</label>
+                    <input type="range" id="spinDuration" min="2" max="8" value="4" oninput="updateSpinDuration(this.value)">
+                    <span id="durationValue">4s</span>
+                </div>
+                <div class="setting-item">
+                    <label for="spinSound">Play Sound</label>
+                    <select id="spinSound">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <button class="add-option" onclick="resetWheel()" style="background: #ff4757;">Reset Wheel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Customize your options above and spin to make your choice!</p>
+        </div>
+    </div>
+
+    <script>
+        class WheelOfChoice {
+            constructor() {
+                this.options = [
+                    { text: 'Option 1', color: '#FF6B6B' },
+                    { text: 'Option 2', color: '#4ECDC4' },
+                    { text: 'Option 3', color: '#45B7D1' },
+                    { text: 'Option 4', color: '#96CEB4' },
+                    { text: 'Option 5', color: '#FFEAA7' },
+                    { text: 'Option 6', color: '#DDA0DD' }
+                ];
+                
+                this.wheel = document.getElementById('wheel');
+                this.spinButton = document.getElementById('spinButton');
+                this.result = document.getElementById('result');
+                this.isSpinning = false;
+                this.currentRotation = 0;
+                this.spinDuration = 4;
+                
+                this.init();
+            }
+
+            init() {
+                this.renderWheel();
+                this.renderOptions();
+                this.bindEvents();
+            }
+
+            renderWheel() {
+                this.wheel.innerHTML = '';
+                const segmentAngle = 360 / this.options.length;
+
+                this.options.forEach((option, index) => {
+                    const segment = document.createElement('div');
+                    segment.className = 'wheel-segment';
+                    segment.style.background = option.color;
+                    segment.style.transform = `rotate(${segmentAngle * index}deg)`;
+                    segment.style.clipPath = `polygon(0% 0%, ${100 - (100/this.options.length)}% 0%, 100% 100%, 0% 100%)`;
+                    
+                    const span = document.createElement('span');
+                    span.textContent = option.text;
+                    segment.appendChild(span);
+                    
+                    this.wheel.appendChild(segment);
+                });
+            }
+
+            renderOptions() {
+                const container = document.getElementById('optionsList');
+                container.innerHTML = '';
+
+                this.options.forEach((option, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option-input';
+                    
+                    optionDiv.innerHTML = `
+                        <input type="text" value="${option.text}" onchange="wheel.updateOption(${index}, 'text', this.value)">
+                        <input type="color" class="color-picker" value="${option.color}" onchange="wheel.updateOption(${index}, 'color', this.value)">
+                        <button class="remove-btn" onclick="wheel.removeOption(${index})" ${this.options.length <= 2 ? 'disabled' : ''}>×</button>
+                    `;
+                    
+                    container.appendChild(optionDiv);
+                });
+            }
+
+            addOption() {
+                const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#F39C12', '#E74C3C', '#9B59B6', '#1ABC9C'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                this.options.push({
+                    text: `Option ${this.options.length + 1}`,
+                    color: randomColor
+                });
+                
+                this.renderWheel();
+                this.renderOptions();
+            }
+
+            removeOption(index) {
+                if (this.options.length > 2) {
+                    this.options.splice(index, 1);
+                    this.renderWheel();
+                    this.renderOptions();
+                }
+            }
+
+            updateOption(index, property, value) {
+                this.options[index][property] = value;
+                this.renderWheel();
+            }
+
+            spin() {
+                if (this.isSpinning) return;
+
+                this.isSpinning = true;
+                this.spinButton.disabled = true;
+                this.result.className = 'result';
+                this.result.textContent = 'Spinning...';
+
+                // Calculate random rotation (multiple full rotations + random position)
+                const minRotation = 1080; // 3 full rotations minimum
+                const maxRotation = 2160; // 6 full rotations maximum
+                const randomRotation = Math.random() * (maxRotation - minRotation) + minRotation;
+                
+                this.currentRotation += randomRotation;
+                
+                // Apply rotation
+                this.wheel.style.transition = `transform ${this.spinDuration}s cubic-bezier(0.17, 0.67, 0.12, 0.99)`;
+                this.wheel.style.transform = `rotate(${this.currentRotation}deg)`;
+
+                // Play spin sound (if enabled)
+                if (document.getElementById('spinSound').value === 'true') {
+                    this.playSpinSound();
+                }
+
+                // Calculate result after spin
+                setTimeout(() => {
+                    this.calculateResult();
+                    this.isSpinning = false;
+                    this.spinButton.disabled = false;
+                }, this.spinDuration * 1000);
+            }
+
+            calculateResult() {
+                const segmentAngle = 360 / this.options.length;
+                const normalizedRotation = (360 - (this.currentRotation % 360)) % 360;
+                const selectedIndex = Math.floor(normalizedRotation / segmentAngle);
+                const winner = this.options[selectedIndex];
+
+                this.result.className = 'result show';
+                this.result.textContent = `🎉 ${winner.text}`;
+
+                // Flash the winning segment
+                this.flashWinningSegment(selectedIndex);
+            }
+
+            flashWinningSegment(index) {
+                const segments = this.wheel.querySelectorAll('.wheel-segment');
+                const winningSegment = segments[index];
+                
+                let flashCount = 0;
+                const flashInterval = setInterval(() => {
+                    winningSegment.style.filter = flashCount % 2 === 0 ? 'brightness(1.5)' : 'brightness(1)';
+                    flashCount++;
+                    
+                    if (flashCount >= 6) {
+                        clearInterval(flashInterval);
+                        winningSegment.style.filter = 'brightness(1)';
+                    }
+                }, 200);
+            }
+
+            playSpinSound() {
+                // Create a simple beep sound using Web Audio API
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                } catch (e) {
+                    console.log('Audio not supported');
+                }
+            }
+
+            updateSpinDuration(value) {
+                this.spinDuration = parseInt(value);
+                document.getElementById('durationValue').textContent = value + 's';
+            }
+
+            reset() {
+                this.options = [
+                    { text: 'Option 1', color: '#FF6B6B' },
+                    { text: 'Option 2', color: '#4ECDC4' },
+                    { text: 'Option 3', color: '#45B7D1' },
+                    { text: 'Option 4', color: '#96CEB4' },
+                    { text: 'Option 5', color: '#FFEAA7' },
+                    { text: 'Option 6', color: '#DDA0DD' }
+                ];
+                
+                this.currentRotation = 0;
+                this.wheel.style.transform = 'rotate(0deg)';
+                this.result.className = 'result';
+                this.result.textContent = 'Click "Spin the Wheel" to get started!';
+                
+                this.renderWheel();
+                this.renderOptions();
+            }
+
+            bindEvents() {
+                this.spinButton.addEventListener('click', () => this.spin());
+            }
+        }
+
+        // Global functions for HTML event handlers
+        const wheel = new WheelOfChoice();
+
+        function addOption() {
+            wheel.addOption();
+        }
+
+        function updateSpinDuration(value) {
+            wheel.updateSpinDuration(value);
+        }
+
+        function resetWheel() {
+            wheel.reset();
+        }
+
+        // Keyboard shortcut to spin
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !wheel.isSpinning) {
+                e.preventDefault();
+                wheel.spin();
+            }
+        });
+    </script>
+</body>
+</html>
